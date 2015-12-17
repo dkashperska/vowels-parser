@@ -31,24 +31,29 @@ public class VowelsParser {
                     vowelCount++;
                 }
                 case 'e': {
-                    vowels.add('a');
+                    vowels.add('e');
                     vowelCount++;
                 }
                 case 'i': {
-                    vowels.add('a');
+                    vowels.add('i');
                     vowelCount++;
                 }
                 case 'o': {
-                    vowels.add('a');
+                    vowels.add('o');
                     vowelCount++;
                 }
                 case 'u': {
-                    vowels.add('a');
+                    vowels.add('u');
                     vowelCount++;
                 }
             }
         }
-        Word wordWithVowels = new Word(vowels, word.length());
+        Word wordWithVowels = new Word();
+        if(!vowels.isEmpty()){
+            wordWithVowels.setVowels(vowels);
+            wordWithVowels.setLength(word.length());
+
+        }
         if(!setOfVowelsWithQuantity.isEmpty() && setOfVowelsWithQuantity.containsKey(wordWithVowels))
             setOfVowelsWithQuantity.put(wordWithVowels, setOfVowelsWithQuantity.get(wordWithVowels) + vowelCount);
         setOfVowelsWithQuantity.put(wordWithVowels, vowelCount);

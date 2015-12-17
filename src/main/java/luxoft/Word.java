@@ -4,11 +4,6 @@ import java.util.Set;
 
 public class Word {
 
-    public Word(Set<Character> vowels, int length) {
-        this.vowels = vowels;
-        this.length = length;
-    }
-
     private Set<Character> vowels;
 
     private int length;
