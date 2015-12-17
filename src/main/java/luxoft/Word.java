@@ -1,8 +1,15 @@
 package luxoft;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Set;
 
 public class Word {
+
+    public Word(Set<Character> vowels, int length){
+        this.vowels = vowels;
+        this.length = length;
+    }
 
     private Set<Character> vowels;
 
@@ -33,9 +40,8 @@ public class Word {
 
         if (length != word.length) return false;
         if (vowels != null ? word.vowels == null : word.vowels != null) return false;
-        if (vowels != null && word.vowels !=null){
-            return vowels.containsAll(word.vowels) ? word.vowels.containsAll(vowels) : !word.vowels.containsAll(vowels);
-        }
+        if (vowels != null && vowels.size() != word.vowels.size()) return false;
+        if (vowels != null && !vowels.containsAll(word.vowels)) return false;
         return true;
     }
 
@@ -50,12 +56,8 @@ public class Word {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("({");
-        if(vowels!=null)
-            for (char vowel : vowels){
-                result.append(vowel).append(", ");
-            }
-        result.deleteCharAt(result.length()-1);
-        result.append("}, ").append(length).append("}");
+        result.append(StringUtils.join(vowels, ", "));
+        result.append("}, ").append(length).append(")");
         return result.toString();
     }
 }
