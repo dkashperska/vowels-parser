@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class VowelsCalculator {
     public static void main(String [ ] args){
-        System.out.print("Please enter path to input file ");
+        System.out.print("\nPlease enter path to input file ");
         //String inputFilePath = System.console().readLine();
         String inputFilePath = "C:\\temp\\input.txt";
         List<String> readLines = new ArrayList<>();
@@ -21,11 +21,12 @@ public class VowelsCalculator {
            System.out.print("\nYour input file is empty. Please try again ");
         else {
             List<String> words = VowelsParser.pruneInput(readLines);
-            Map<Word, Integer> setOfVowelsWithQuantity = VowelsParser.findSetOfVowels(words);
+            Map<Word, Integer> vowelQuantityMap = VowelsParser.findSetOfVowels(words);
             System.out.print("\nPlease enter path to output file ");
             //String outputFilePath = System.console().readLine();
             String outputFilePath = "C:\\temp\\output.txt";
-            for(Map.Entry<Word, Integer> entry : setOfVowelsWithQuantity.entrySet()){
+            FileWriter.deleteExistingFile(outputFilePath);
+            for(Map.Entry<Word, Integer> entry : vowelQuantityMap.entrySet()){
                 StringBuilder line = new StringBuilder();
                 line.append(entry.getKey()).append(" -> ").append(calculateAverageNumberOfVowels(entry)).append("\n");
                 try {

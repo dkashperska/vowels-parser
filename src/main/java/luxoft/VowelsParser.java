@@ -9,48 +9,49 @@ public class VowelsParser {
     public static List<String> pruneInput(List<String> inputLines){
         List<String> result = new ArrayList<String>();
         for (String line : inputLines){
-            line = line.replaceAll("[^A-Za-z\\s]", "").toLowerCase();
-            result.addAll(Arrays.asList(line.split("\\s")));
+            //include apostrophe in the word length
+            line = line.replaceAll("-"," ").replaceAll("[^A-Za-z'\\s]", "").toLowerCase();
+            result.addAll(Arrays.asList(line.split("[\\s]")));
         }
         return result;
     }
 
     public static Map<Word, Integer> findSetOfVowels(List<String> words){
-        Map<Word, Integer> setOfVowelsWithQuantity = new LinkedHashMap<Word, Integer>();
+        Map<Word, Integer> vowelQuantityMap = new LinkedHashMap<Word, Integer>();
         for (String word : words){
-            calculateVowelsQuantity(setOfVowelsWithQuantity, word);
+            calculateVowelsQuantity(vowelQuantityMap, word);
         }
-        return setOfVowelsWithQuantity;
+        return vowelQuantityMap;
     }
 
-    private static void calculateVowelsQuantity(Map<Word, Integer> setOfVowelsWithQuantity,String word){
-        Set<Character> setOfVowels = new HashSet<Character>();
+    private static void calculateVowelsQuantity(Map<Word, Integer> vowelQuantityMap,String word){
+        Set<Character> vowelSet = new HashSet<>();
         int vowelCount = 0;
         for(int i=0; i < word.length(); i++){
             char letter = word.charAt(i);
             if(englishVowels.contains(letter)){
-                setOfVowels.add(letter);
+                vowelSet.add(letter);
                 vowelCount++;
             }
         }
-        addVowelsWithQuantity(setOfVowelsWithQuantity, setOfVowels, word.length(), vowelCount);
+        addVowelsWithQuantity(vowelQuantityMap, vowelSet, word.length(), vowelCount);
     }
 
-    private static void addVowelsWithQuantity(Map<Word, Integer> setOfVowelsWithQuantity, Set<Character> setOfVowels, int wordLength, int vowelCount){
+    private static void addVowelsWithQuantity(Map<Word, Integer> vowelQuantityMap, Set<Character> vowelSet, int wordLength, int vowelCount){
         Word wordWithVowels = null;
-        if(!setOfVowels.isEmpty()){
-            wordWithVowels = new Word(setOfVowels, wordLength);
+        if(!vowelSet.isEmpty()){
+            wordWithVowels = new Word(vowelSet, wordLength);
         }
         if(wordWithVowels != null)
-            if(setOfVowelsWithQuantity.containsKey(wordWithVowels))
-                setOfVowelsWithQuantity.put(wordWithVowels, setOfVowelsWithQuantity.get(wordWithVowels) + vowelCount);
+            if(vowelQuantityMap.containsKey(wordWithVowels))
+                vowelQuantityMap.put(wordWithVowels, vowelQuantityMap.get(wordWithVowels) + vowelCount);
             else
-                setOfVowelsWithQuantity.put(wordWithVowels, vowelCount);
+                vowelQuantityMap.put(wordWithVowels, vowelCount);
     }
 
     private static Set<Character> createSetOfVowels(){
-        Character[] arrayOfVowels = {'a','e', 'i', 'o', 'u' };
+        Character[] vowelArray = {'a','e', 'i', 'o', 'u' };
         //TODO Refactor
-        return new HashSet(Arrays.asList(arrayOfVowels));
+        return new HashSet(Arrays.asList(vowelArray));
     }
 }
