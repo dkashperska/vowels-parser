@@ -23,7 +23,8 @@ public class VowelsCalculator {
             List<String> words = VowelsParser.pruneInput(readLines);
             Map<Word, Integer> setOfVowelsWithQuantity = VowelsParser.findSetOfVowels(words);
             System.out.print("Please enter path to output file ");
-            String outputFilePath = System.console().readLine();
+            //String outputFilePath = System.console().readLine();
+            String outputFilePath = "C:\\temp\\output.txt";
             for(Map.Entry<Word, Integer> entry : setOfVowelsWithQuantity.entrySet()){
                 StringBuilder line = new StringBuilder();
                 line.append(entry.getKey()).append(" -> ").append(calculateAverageNumberOfVowels(entry));

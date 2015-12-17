@@ -50,9 +50,10 @@ public class Word {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("({");
-        for (char vowel : vowels){
-            result.append(vowel).append(", ");
-        }
+        if(vowels!=null)
+            for (char vowel : vowels){
+                result.append(vowel).append(", ");
+            }
         result.deleteCharAt(result.length()-1);
         result.append("}, ").append(length).append("}");
         return result.toString();

@@ -7,7 +7,7 @@ public class VowelsParser {
     public static List<String> pruneInput(List<String> inputLines){
         List<String> result = new ArrayList<String>();
         for (String line : inputLines){
-            line.replaceAll("[^A-Za-z\\s]", "").toLowerCase();
+            line = line.replaceAll("[^A-Za-z\\s]", "").toLowerCase();
             result.addAll(Arrays.asList(line.split("\\s")));
         }
         return result;
@@ -15,37 +15,21 @@ public class VowelsParser {
 
     public static Map<Word, Integer> findSetOfVowels(List<String> words){
         Map<Word, Integer> setOfVowelsWithQuantity = new LinkedHashMap<Word, Integer>();
+        Set<Character> englishVowels = createSetOfVowels();
         for (String word : words){
-            calculateVowelsQuantity(setOfVowelsWithQuantity, word);
+            calculateVowelsQuantity(setOfVowelsWithQuantity, word, englishVowels);
         }
         return setOfVowelsWithQuantity;
     }
 
-    private static void calculateVowelsQuantity(Map<Word, Integer> setOfVowelsWithQuantity,String word){
+    private static void calculateVowelsQuantity(Map<Word, Integer> setOfVowelsWithQuantity,String word, Set<Character> englishVowels){
         Set<Character> vowels = new HashSet<Character>();
         int vowelCount = 0;
         for(int i=0; i < word.length(); i++){
-            switch (word.charAt(i)) {
-                case 'a': {
-                    vowels.add('a');
-                    vowelCount++;
-                }
-                case 'e': {
-                    vowels.add('e');
-                    vowelCount++;
-                }
-                case 'i': {
-                    vowels.add('i');
-                    vowelCount++;
-                }
-                case 'o': {
-                    vowels.add('o');
-                    vowelCount++;
-                }
-                case 'u': {
-                    vowels.add('u');
-                    vowelCount++;
-                }
+            char letter = word.charAt(i);
+            if(englishVowels.contains(letter)){
+                vowels.add(letter);
+                vowelCount++;
             }
         }
         Word wordWithVowels = new Word();
@@ -57,6 +41,12 @@ public class VowelsParser {
         if(!setOfVowelsWithQuantity.isEmpty() && setOfVowelsWithQuantity.containsKey(wordWithVowels))
             setOfVowelsWithQuantity.put(wordWithVowels, setOfVowelsWithQuantity.get(wordWithVowels) + vowelCount);
         setOfVowelsWithQuantity.put(wordWithVowels, vowelCount);
+    }
+
+    private static Set<Character> createSetOfVowels(){
+        Character[] arrayOfVowels = {'a','e', 'i', 'o', 'u' };
+        //TODO Refactor
+        return new HashSet<Character>(Arrays.asList(arrayOfVowels));
     }
 
  /*   private enum Vowels {
