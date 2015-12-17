@@ -1,44 +1,61 @@
 package luxoft;
 
+import java.io.Console;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class VowelsCalculator {
-    public static void main(String [ ] args){
-        System.out.print("\nPlease enter path to input file ");
-        //String inputFilePath = System.console().readLine();
-        String inputFilePath = "C:\\temp\\input.txt";
-        List<String> readLines = new ArrayList<>();
-        try {
-            readLines = FileReader.readFromFile(inputFilePath);
-        } catch (IOException e) {
-            System.out.print("\nCouldn't read from file under entered path. Please try again ");
+
+    private static String nl = System.getProperty("line.separator");
+
+    public static void main(String[] args) {
+
+        Console c = System.console();
+        if (c == null) {
+            System.out.println("Console not found. Exiting.");
+            System.exit(1);
+        }
+        String input;
+        List<String> readLines;
+        while (true) {
+            input = c.readLine("Please enter path to input file.%s", nl);
+            checkExitCmd(input);
+            try {
+                readLines = FileReader.readFromFile(input);
+                if (readLines.isEmpty()) {
+                    System.out.println("Your input file is empty. Please try again ");
+                    continue;
+                }
+                break;
+            } catch (IOException e) {
+                System.out.println("Couldn't read from file under entered path. Please try again.");
+            }
         }
 
-        if(readLines.isEmpty())
-           System.out.print("\nYour input file is empty. Please try again ");
-        else {
-            List<String> words = VowelsParser.pruneInput(readLines);
-            Map<Word, Integer> vowelQuantityMap = VowelsParser.findSetOfVowels(words);
-            System.out.print("\nPlease enter path to output file ");
-            //String outputFilePath = System.console().readLine();
-            String outputFilePath = "C:\\temp\\output.txt";
-            FileWriter.deleteExistingFile(outputFilePath);
-            for(Map.Entry<Word, Integer> entry : vowelQuantityMap.entrySet()){
-                StringBuilder line = new StringBuilder();
-                line.append(entry.getKey()).append(" -> ").append(calculateAverageNumberOfVowels(entry)).append("\n");
-                try {
-                    FileWriter.writeLineToFile(outputFilePath, line.toString());
-                } catch (IOException e) {
-                    System.out.print("\nCouldn't write to file under entered path. Please try again ");
-                }
+        System.out.println("Parsing...");
+        VowelsParser parser = new VowelsParser();
+        List<String> words = parser.pruneInput(readLines);
+        Map<WordInfo, Double> vowelFrequencyMap = parser.createVowelFrequencyMap(words);
+        System.out.println("Parsing completed successfully.");
+
+        while (true) {
+            input = c.readLine("Please enter path to output file.%s", nl);
+            checkExitCmd(input);
+            FileWriter.deleteExistingFile(input);
+            try {
+                FileWriter.writeMapToFile(vowelFrequencyMap, input);
+                break;
+            } catch (IOException e) {
+                System.out.println("Couldn't write to file under entered path. Please try again.");
             }
         }
     }
 
-    private static double calculateAverageNumberOfVowels(Map.Entry<Word, Integer> entry){
-        return entry.getValue() / entry.getKey().getVowels().size();
+    private static void checkExitCmd(String cmd) {
+        if ("exit".equals(cmd)) {
+            System.out.println("Exiting");
+            System.exit(0);
+        }
     }
 }

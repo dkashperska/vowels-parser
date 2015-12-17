@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
 
-public class Word {
+public class WordInfo {
 
-    public Word(Set<Character> vowels, int length){
+    public WordInfo(Set<Character> vowels, int length) {
         this.vowels = vowels;
         this.length = length;
     }
@@ -36,12 +36,12 @@ public class Word {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Word word = (Word) o;
+        WordInfo wordInfo = (WordInfo) o;
 
-        if (length != word.length) return false;
-        if (vowels != null ? word.vowels == null : word.vowels != null) return false;
-        if (vowels != null && vowels.size() != word.vowels.size()) return false;
-        if (vowels != null && !vowels.containsAll(word.vowels)) return false;
+        if (length != wordInfo.length) return false;
+        if (vowels != null ? wordInfo.vowels == null : wordInfo.vowels != null) return false;
+        if (vowels != null && vowels.size() != wordInfo.vowels.size()) return false;
+        if (vowels != null && !vowels.containsAll(wordInfo.vowels)) return false;
         return true;
     }
 
