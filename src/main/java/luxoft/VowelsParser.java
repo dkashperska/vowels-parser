@@ -17,7 +17,7 @@ public class VowelsParser {
     }
 
     public List<String> pruneInput(List<String> inputLines) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String line : inputLines) {
             //include apostrophe in the word length
             line = line.replaceAll("-", " ").replaceAll("[^A-Za-z'\\s]", "").toLowerCase();
@@ -49,7 +49,7 @@ public class VowelsParser {
     }
 
     public Set<Character> extractVowels(String word) {
-        Set<Character> vowels = new HashSet<>(word.length());
+        Set<Character> vowels = new TreeSet<>();
         for (char letter : word.toCharArray()) {
             if (knownVowels.contains(letter)) {
                 vowels.add(letter);
